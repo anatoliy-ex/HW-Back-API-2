@@ -37,7 +37,7 @@ blogs_routes_1.h2BlogsRouter.post('/', exports.adminStatusAuth, (req, res) => {
     res.status(201).send(newPost);
     return;
 });
-blogs_routes_1.h2BlogsRouter.put('/', exports.adminStatusAuth, validator_middlewares_1.inputValidationMiddleware, validator_middlewares_1.postValidationMiddleware, (req, res) => {
+blogs_routes_1.h2BlogsRouter.put('/:id', exports.adminStatusAuth, validator_middlewares_1.inputValidationMiddleware, validator_middlewares_1.postValidationMiddleware, (req, res) => {
     const updatePost = posts_repository_1.postsRepository.updatePostByID(req.body, req.params.id);
     if (updatePost) {
         res.sendStatus(201);
@@ -46,7 +46,7 @@ blogs_routes_1.h2BlogsRouter.put('/', exports.adminStatusAuth, validator_middlew
         res.send(404);
     }
 });
-blogs_routes_1.h2BlogsRouter.delete('/', exports.adminStatusAuth, validator_middlewares_1.inputValidationMiddleware, validator_middlewares_1.postValidationMiddleware, (req, res) => {
+blogs_routes_1.h2BlogsRouter.delete('/:id', exports.adminStatusAuth, validator_middlewares_1.inputValidationMiddleware, validator_middlewares_1.postValidationMiddleware, (req, res) => {
     const isDeleted = posts_repository_1.postsRepository.deletePostByID(req.params.id);
     if (isDeleted) {
         res.sendStatus(204);

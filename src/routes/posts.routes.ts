@@ -50,7 +50,7 @@ h2BlogsRouter.post('/', adminStatusAuth, (req: Request, res: Response) =>
     return;
 })
 
-h2BlogsRouter.put('/', adminStatusAuth, inputValidationMiddleware, postValidationMiddleware, (req: Request, res: Response) =>
+h2BlogsRouter.put('/:id', adminStatusAuth, inputValidationMiddleware, postValidationMiddleware, (req: Request, res: Response) =>
 {
     const updatePost = postsRepository.updatePostByID(req.body, req.params.id)
 
@@ -64,7 +64,7 @@ h2BlogsRouter.put('/', adminStatusAuth, inputValidationMiddleware, postValidatio
     }
 })
 
-h2BlogsRouter.delete('/', adminStatusAuth, inputValidationMiddleware, postValidationMiddleware, (req: Request, res: Response) =>
+h2BlogsRouter.delete('/:id', adminStatusAuth, inputValidationMiddleware, postValidationMiddleware, (req: Request, res: Response) =>
 {
     const isDeleted = postsRepository.deletePostByID(req.params.id)
 
