@@ -17,7 +17,7 @@ export const blogsRepository =
     {
         const newBlog =
         {
-            id: `${Date.now}`,
+            id: `${Date.now()}`,
             name: blog.name,
             description: blog.description,
             websiteUrl: blog.websiteUrl
