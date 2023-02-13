@@ -22,8 +22,8 @@ export const inputValidationMiddleware = (req: Request, res: Response, next: Nex
         return res.status(400).send({
             errorsMessages: error.array({onlyFirstError: true}).map(e => {
                 return {
-                    message: e.msg,
-                    field: e.param
+                     message: e.msg,
+                     field: e.param
                 }
             })
         })
