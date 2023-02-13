@@ -34,7 +34,7 @@ h2BlogsRouter.get('/:id', (req: Request, res: Response) =>
     }
 })
 
-h2BlogsRouter.post('/', inputValidationMiddleware, blogValidationMiddleware, adminStatusAuth, (req: Request, res: Response) =>
+h2BlogsRouter.post('/', adminStatusAuth, inputValidationMiddleware, blogValidationMiddleware, (req: Request, res: Response) =>
 {
     const newBlog = blogsRepository.createBlog(req.body)
 
@@ -42,12 +42,12 @@ h2BlogsRouter.post('/', inputValidationMiddleware, blogValidationMiddleware, adm
     return;
 })
 
-h2BlogsRouter.put('/:id', adminStatusAuth, inputValidationMiddleware, blogValidationMiddleware, (req: Request, res: Response) =>
+h2BlogsRouter.put('/:id', adminStatusAuth, blogValidationMiddleware, inputValidationMiddleware,  (req: Request, res: Response) =>
 {
     const updateBlog = blogsRepository.updateBlogByID(req.params.id, req.body)
     if(updateBlog)
     {
-        res.sendStatus(201)
+        res.sendStatus(204)
     }
     else
     {
