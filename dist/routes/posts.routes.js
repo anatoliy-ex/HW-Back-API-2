@@ -30,7 +30,7 @@ exports.h2PostsRouter.get('/:id', (req, res) => {
         return;
     }
 });
-exports.h2PostsRouter.post('/', exports.adminStatusAuth, (req, res) => {
+exports.h2PostsRouter.post('/', exports.adminStatusAuth, validator_middlewares_1.postValidationMiddleware, validator_middlewares_1.inputValidationMiddleware, (req, res) => {
     const blog = blogs_repository_1.blogsRepository.getBlogByID(req.body.blogId);
     let newPost = posts_repository_1.postsRepository.createPost(req.body, blog.name);
     res.status(201).send(newPost);
@@ -45,7 +45,7 @@ exports.h2PostsRouter.put('/:id', exports.adminStatusAuth, validator_middlewares
         res.send(404);
     }
 });
-exports.h2PostsRouter.delete('/:id', exports.adminStatusAuth, validator_middlewares_1.postValidationMiddleware, validator_middlewares_1.inputValidationMiddleware, (req, res) => {
+exports.h2PostsRouter.delete('/:id', exports.adminStatusAuth, (req, res) => {
     const isDeleted = posts_repository_1.postsRepository.deletePostByID(req.params.id);
     if (isDeleted) {
         res.sendStatus(204);
