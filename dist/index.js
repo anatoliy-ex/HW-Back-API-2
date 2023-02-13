@@ -14,5 +14,5 @@ const parserMiddleware = (0, body_parser_1.default)({});
 app.use(parserMiddleware);
 app.use("/blogs", blogs_routes_1.h2BlogsRouter);
 app.use("/posts", posts_routes_1.h2PostsRouter);
-app.use("testing/", testing_routes_1.h2TestingRouter);
+app.use("/testing", testing_routes_1.h2TestingRouter);
 app.listen(port, () => { console.log(`Example app listening on port ${port}`); });

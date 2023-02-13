@@ -11,7 +11,7 @@ const parserMiddleware = bodyParser({})
 app.use(parserMiddleware)
 app.use("/blogs", h2BlogsRouter)
 app.use("/posts", h2PostsRouter)
-app.use("testing/", h2TestingRouter)
+app.use("/testing", h2TestingRouter)
 
 
 
