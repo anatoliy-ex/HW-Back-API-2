@@ -11,7 +11,7 @@ exports.blogsRepository = {
     },
     createBlog(blog) {
         const newBlog = {
-            id: " " + new Date(),
+            id: `${Date.now}`,
             name: blog.name,
             description: blog.description,
             websiteUrl: blog.websiteUrl
