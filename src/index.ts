@@ -5,7 +5,7 @@ import {h2PostsRouter} from "./routes/posts.routes";
 import {h2TestingRouter} from "./routes/testing.routes";
 
 const app = express()
-const port = 3333
+const port = process.env.PORT || 3333
 const parserMiddleware = bodyParser({})
 
 app.use(parserMiddleware)
