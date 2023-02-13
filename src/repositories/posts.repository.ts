@@ -18,7 +18,7 @@ export const postsRepository =
     {
         const newPost =
         {
-            id:" " +new Date(),
+            id:`${Date.now()}`,
             title: post.title,
             shortDescription: post.shortDescription,
             content: post.content,

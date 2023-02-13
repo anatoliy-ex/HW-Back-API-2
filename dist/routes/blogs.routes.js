@@ -27,7 +27,7 @@ exports.h2BlogsRouter.get('/:id', (req, res) => {
         return;
     }
 });
-exports.h2BlogsRouter.post('/', exports.adminStatusAuth, validator_middlewares_1.inputValidationMiddleware, validator_middlewares_1.blogValidationMiddleware, (req, res) => {
+exports.h2BlogsRouter.post('/', exports.adminStatusAuth, validator_middlewares_1.blogValidationMiddleware, validator_middlewares_1.inputValidationMiddleware, (req, res) => {
     const newBlog = blogs_repository_1.blogsRepository.createBlog(req.body);
     res.status(201).send(newBlog);
     return;
