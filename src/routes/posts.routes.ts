@@ -1,16 +1,17 @@
 import {Request, Response, Router} from "express"
-import {postsRepository} from "../repositories/posts.repository";
-import {h2BlogsRouter} from "./blogs.routes";
-import {blogsRepository} from "../repositories/blogs.repository";
+import {postsRepositoryDb} from "../repositories/posts.repository.db";
+import {blogsRepositoryDb} from "../repositories/blogs.repository.db";
+
 export const h2PostsRouter = Router({})
 import {inputValidationMiddleware, postValidationMiddleware} from "../middlewares/validator.middlewares"
+import {BlogsType, PostsTypes} from "../types/types";
 
 export const expressBasicAuth = require('express-basic-auth')
 export const adminStatusAuth = expressBasicAuth({users: { 'admin': 'qwerty' }});
 
-h2PostsRouter.get('/', (req: Request, res: Response) =>
+h2PostsRouter.get('/', async (req: Request, res: Response) =>
 {
-    const allPost = postsRepository.allPosts()
+    const allPost = await postsRepositoryDb.allPosts()
 
     if(allPost)
     {
@@ -25,9 +26,9 @@ h2PostsRouter.get('/', (req: Request, res: Response) =>
 
 })
 
-h2PostsRouter.get('/:id', (req: Request, res: Response) =>
+h2PostsRouter.get('/:id', async (req: Request, res: Response) =>
 {
-    const postWithID =  postsRepository.getPostByID(req.params.id)
+    const postWithID : PostsTypes | null = await postsRepositoryDb.getPostByID(req.params.id)
 
     if(postWithID)
     {
@@ -41,18 +42,21 @@ h2PostsRouter.get('/:id', (req: Request, res: Response) =>
     }
 })
 
-h2PostsRouter.post('/', adminStatusAuth, postValidationMiddleware, inputValidationMiddleware, (req: Request, res: Response) =>
+h2PostsRouter.post('/', adminStatusAuth, postValidationMiddleware, inputValidationMiddleware, async (req: Request, res: Response) =>
 {
-    const blog = blogsRepository.getBlogByID(req.body.blogId)
-    let newPost = postsRepository.createPost(req.body, blog!.name);
-
-    res.status(201).send(newPost);
-    return;
+    const foundBlog : BlogsType | null = await blogsRepositoryDb.getBlogByID(req.body.blogId);
+    if (foundBlog === null) {
+        res.sendStatus(404)
+    } else {
+        const blogName = foundBlog.name
+        const newPost: PostsTypes = await postsRepositoryDb.createPost(req.body, blogName);
+        res.status(201).send(newPost)
+    }
 })
 
-h2PostsRouter.put('/:id', adminStatusAuth,  postValidationMiddleware, inputValidationMiddleware, (req: Request, res: Response) =>
+h2PostsRouter.put('/:id', adminStatusAuth,  postValidationMiddleware, inputValidationMiddleware, async (req: Request, res: Response) =>
 {
-    const updatePost = postsRepository.updatePostByID(req.body, req.params.id)
+    const updatePost = await postsRepositoryDb.updatePostByID(req.body, req.params.id)
 
     if(updatePost)
     {
@@ -64,9 +68,9 @@ h2PostsRouter.put('/:id', adminStatusAuth,  postValidationMiddleware, inputValid
     }
 })
 
-h2PostsRouter.delete('/:id', adminStatusAuth, (req: Request, res: Response) =>
+h2PostsRouter.delete('/:id', adminStatusAuth, async (req: Request, res: Response) =>
 {
-    const isDeleted = postsRepository.deletePostByID(req.params.id)
+    const isDeleted = await postsRepositoryDb.deletePostByID(req.params.id)
 
     if(isDeleted)
     {

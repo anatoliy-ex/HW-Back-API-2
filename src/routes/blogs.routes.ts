@@ -1,26 +1,22 @@
 import {Request, Response, Router} from "express"
-import {blogsRepository} from "../repositories/blogs.repository";
+import {blogsRepositoryDb} from "../repositories/blogs.repository.db";
 export const h2BlogsRouter = Router({})
 import {inputValidationMiddleware, blogValidationMiddleware} from "../middlewares/validator.middlewares"
+import {BlogsType} from "../types/types";
 
 export const expressBasicAuth = require('express-basic-auth')
 export const adminStatusAuth = expressBasicAuth({users: { 'admin': 'qwerty' }});
 
-h2BlogsRouter.get('/', (req: Request, res: Response) =>
+h2BlogsRouter.get('/', async (req: Request, res: Response) =>
 {
-    const allBlogs = blogsRepository.allBlogs()
-    if(allBlogs)
-    {
-        res.status(200).send(allBlogs);
-        return;
-    }
-    res.sendStatus(404);
+    let allBlogs = await blogsRepositoryDb.allBlogs();
+    res.status(200).send(allBlogs);
     return;
 })
 
-h2BlogsRouter.get('/:id', (req: Request, res: Response) =>
+h2BlogsRouter.get('/:id', async (req: Request, res: Response) =>
 {
-    const blogWithID = blogsRepository.getBlogByID(req.params.id)
+    const blogWithID = await blogsRepositoryDb.getBlogByID(req.params.id)
 
     if(blogWithID)
     {
@@ -34,17 +30,17 @@ h2BlogsRouter.get('/:id', (req: Request, res: Response) =>
     }
 })
 
-h2BlogsRouter.post('/', adminStatusAuth, blogValidationMiddleware, inputValidationMiddleware, (req: Request, res: Response) =>
+h2BlogsRouter.post('/', adminStatusAuth, blogValidationMiddleware, inputValidationMiddleware ,async (req: Request, res: Response) =>
 {
-    const newBlog = blogsRepository.createBlog(req.body)
-
+    const newBlogPromise : Promise<BlogsType> = blogsRepositoryDb.createBlog(req.body);
+    const newBlog : BlogsType = await newBlogPromise
     res.status(201).send(newBlog);
-    return;
+    return
 })
 
-h2BlogsRouter.put('/:id', adminStatusAuth, blogValidationMiddleware, inputValidationMiddleware, (req: Request, res: Response) =>
+h2BlogsRouter.put('/:id', adminStatusAuth, blogValidationMiddleware, inputValidationMiddleware, async (req: Request, res: Response) =>
 {
-    const updateBlog = blogsRepository.updateBlogByID(req.params.id, req.body)
+    const updateBlog = await blogsRepositoryDb.updateBlogByID(req.params.id, req.body)
     if(updateBlog)
     {
         res.sendStatus(204)
@@ -55,16 +51,18 @@ h2BlogsRouter.put('/:id', adminStatusAuth, blogValidationMiddleware, inputValida
     }
 })
 
-h2BlogsRouter.delete('/:id', adminStatusAuth, (req: Request, res: Response) =>
+h2BlogsRouter.delete('/:id', adminStatusAuth, async (req: Request, res: Response) =>
 {
-    const isDeleted = blogsRepository.deleteBlogByID(req.params.id)
+    const isDeleted = await blogsRepositoryDb.deleteBlogByID(req.params.id)
 
     if(isDeleted)
     {
         res.sendStatus(204);
+        return;
     }
     else
     {
         res.sendStatus(404);
+        return;
     }
 })

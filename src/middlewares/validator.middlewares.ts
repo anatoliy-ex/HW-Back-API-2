@@ -3,13 +3,11 @@ import { NextFunction } from "express";
 import { Response, Request } from "express";
 import { CustomValidator } from "express-validator/src/base";
 import { body, validationResult } from 'express-validator';
-import {postsDB} from "../dataBase/posts.db";
-import {blogsDB} from "../dataBase/blogs.db";
-import{ blogsRepository} from "../repositories/blogs.repository";
-import { postsRepository} from "../repositories/posts.repository";
+import{ blogsRepositoryDb} from "../repositories/blogs.repository.db";
+import {postsRepositoryDb} from "../repositories/posts.repository.db";
 
 export const findByIdBlogs : CustomValidator = value => {
-    let blog = blogsRepository.getBlogByID(value)
+    let blog = blogsRepositoryDb.getBlogByID(value)
     if (!blog){
         throw new Error('Invalid blogId')
     }
