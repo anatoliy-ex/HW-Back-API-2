@@ -1,5 +1,17 @@
 import {blogsCollection} from "../dataBase/db";
-import {BlogsType} from "../types/types";
+import { BlogsType, } from "../types/types";
+import {ObjectId} from "mongodb";
+
+// const mapBlogToViewModel = (blog: BlogsDbType): BlogsViewType => {
+//     return {
+//         id: blog.id,
+//         name: blog.name,
+//         description: blog.description,
+//         websiteUrl: blog.websiteUrl,
+//         createdAt: blog.createdAt,
+//         isMembership: blog.isMembership,
+//     }
+// }
 
 export const blogsRepositoryDb =
     {
@@ -15,15 +27,15 @@ export const blogsRepositoryDb =
 
         async createBlog(blog : BlogsType) : Promise<BlogsType>
         {
-            const newBlog = {
-                id:`${Date.now()}`,
+            const newBlog: BlogsType = {
+                id: Date.now().toString(),
                 name: blog.name,
                 description: blog.description,
                 websiteUrl: blog.websiteUrl,
                 createdAt: new Date().toISOString(),
                 isMembership: false
             }
-            await blogsCollection.insertOne(newBlog)
+            await blogsCollection.insertOne({...newBlog})
             return newBlog
         },
 

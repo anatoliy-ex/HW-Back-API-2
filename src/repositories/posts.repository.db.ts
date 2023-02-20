@@ -1,5 +1,5 @@
-import {blogsCollection, postsCollection} from "../dataBase/db";
-import {BlogsType, PostsTypes} from "../types/types";
+import {postsCollection} from "../dataBase/db";
+import {PostsTypes} from "../types/types";
 
 export const postsRepositoryDb =
 {
@@ -24,13 +24,13 @@ export const postsRepositoryDb =
             blogName: blogName,
             createdAt : new Date().toISOString()
         }
-        await postsCollection.insertOne(newPost)
+        await postsCollection.insertOne({...newPost})
         return newPost
     },
 
     async updatePostByID(post: PostsTypes, id: string) : Promise<boolean>
     {
-        const result = await blogsCollection.updateOne({id: id}, { $set:
+        const result = await postsCollection.updateOne({id: id}, { $set:
                 {
                     title : post.title,
                     shortDescription : post.shortDescription,

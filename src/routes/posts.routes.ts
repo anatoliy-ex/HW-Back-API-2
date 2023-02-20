@@ -56,16 +56,10 @@ h2PostsRouter.post('/', adminStatusAuth, postValidationMiddleware, inputValidati
 
 h2PostsRouter.put('/:id', adminStatusAuth,  postValidationMiddleware, inputValidationMiddleware, async (req: Request, res: Response) =>
 {
-    const updatePost = await postsRepositoryDb.updatePostByID(req.body, req.params.id)
-
-    if(updatePost)
-    {
-        res.sendStatus(204);
-    }
-    else
-    {
-        res.sendStatus(404);
-    }
+    const post = await postsRepositoryDb.getPostByID(req.params.id)
+    if (!post) return  res.sendStatus(404);
+    await postsRepositoryDb.updatePostByID(req.body, req.params.id)
+    res.sendStatus(204);
 })
 
 h2PostsRouter.delete('/:id', adminStatusAuth, async (req: Request, res: Response) =>
