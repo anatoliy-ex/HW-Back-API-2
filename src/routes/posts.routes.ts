@@ -64,7 +64,7 @@ h2PostsRouter.put('/:id', adminStatusAuth,  postValidationMiddleware, inputValid
     }
     else
     {
-        res.send(404);
+        res.sendStatus(404);
     }
 })
 

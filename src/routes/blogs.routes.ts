@@ -47,7 +47,7 @@ h2BlogsRouter.put('/:id', adminStatusAuth, blogValidationMiddleware, inputValida
     }
     else
     {
-        res.send(404)
+        res.sendStatus(404)
     }
 })
 
