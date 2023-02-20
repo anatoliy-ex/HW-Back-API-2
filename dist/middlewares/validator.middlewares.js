@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postValidationMiddleware = exports.blogValidationMiddleware = exports.inputValidationMiddleware = exports.findByIdBlogs = void 0;
 const express_validator_1 = require("express-validator");
-const blogs_repository_1 = require("../repositories/blogs.repository");
+const blogs_repository_db_1 = require("../repositories/blogs.repository.db");
 const findByIdBlogs = value => {
-    let blog = blogs_repository_1.blogsRepository.getBlogByID(value);
+    let blog = blogs_repository_db_1.blogsRepositoryDb.getBlogByID(value);
     if (!blog) {
         throw new Error('Invalid blogId');
     }
